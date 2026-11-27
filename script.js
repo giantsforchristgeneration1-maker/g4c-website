@@ -24,9 +24,21 @@ const io = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.12 });
 
-document.querySelectorAll('.qcard, .pillar, .mcard, .lead-card, .gal-grid figure, .stat, .prog-card').forEach(el => {
+document.querySelectorAll('.qcard, .pillar, .mcard, .lead-card, .stat, .prog-card').forEach(el => {
   el.style.opacity = 0;
   el.style.transform = 'translateY(18px)';
   el.style.transition = 'opacity .6s ease, transform .6s ease';
   io.observe(el);
+});
+
+// see more / show less for galleries
+document.querySelectorAll('.seemore').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const grid = document.getElementById(btn.dataset.grid);
+    if (!grid) return;
+    const open = grid.classList.toggle('expanded');
+    btn.classList.toggle('open', open);
+    btn.firstChild.nodeValue = open ? btn.dataset.less + ' ' : btn.dataset.more + ' ';
+    if (!open) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
 });
