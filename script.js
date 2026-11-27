@@ -103,7 +103,7 @@ document.querySelectorAll('.seemore').forEach(btn => {
     formView.hidden = false;
     doneView.hidden = true;
     btn.disabled = false;
-    btn.textContent = 'Give now';
+    btn.textContent = "Donate and support God's work";
     modal.classList.add('open');
     modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
