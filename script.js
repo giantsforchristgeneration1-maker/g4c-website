@@ -70,6 +70,9 @@ document.querySelectorAll('.seemore').forEach(btn => {
   const doneName = document.getElementById('doneName');
   const curBtns = [...document.querySelectorAll('.cur')];
 
+  const digits = (s) => String(s || '').replace(/[^0-9]/g, '');
+  const fmt = (v) => (v ? Number(v).toLocaleString('en-US') : '');
+
   const say = (msg, bad) => {
     if (!note) return;
     note.textContent = msg || '';
@@ -86,7 +89,7 @@ document.querySelectorAll('.seemore').forEach(btn => {
       chip.addEventListener('click', () => {
         chipsEl.querySelectorAll('.amt').forEach((x) => x.classList.remove('active'));
         chip.classList.add('active');
-        amountEl.value = chip.dataset.amount;
+        amountEl.value = fmt(chip.dataset.amount);
       });
     });
     curSym.textContent = c.sym;
@@ -127,16 +130,19 @@ document.querySelectorAll('.seemore').forEach(btn => {
     renderChips();
   }));
 
-  amountEl?.addEventListener('input', () => chipsEl.querySelectorAll('.amt').forEach((x) => x.classList.remove('active')));
+  amountEl?.addEventListener('input', () => {
+    const d = digits(amountEl.value);
+    amountEl.value = fmt(d);
+    chipsEl.querySelectorAll('.amt').forEach((x) => x.classList.remove('active'));
+  });
 
   btn?.addEventListener('click', () => {
     const c = CUR[currency];
-    const amount = parseInt((amountEl.value || '').replace(/[^0-9]/g, ''), 10);
+    const amount = parseInt(digits(amountEl.value), 10);
     const email = (emailEl.value || '').trim();
     const name = (nameEl.value || '').trim();
 
     if (!amount || amount < c.min) return say(`Enter at least ${c.sym}${c.min}.`, true);
-    if (!name) return say('Please tell us your name.', true);
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return say('Enter a valid email so we can send your receipt.', true);
     if (typeof PaystackPop === 'undefined') return say('Payment is still loading — check your connection and try again.', true);
 
