@@ -296,3 +296,6 @@ h2{font-family:var(--head);font-weight:700;font-size:clamp(30px,4vw,46px);line-h
   .cta-card{padding:26px 22px}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* screen-reader-only text (keeps the brand phrase in the H1 without changing the design) */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0,0,0,0);white-space:nowrap;border:0}

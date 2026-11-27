@@ -3,4 +3,4 @@ Allow: /
 Disallow: /thanks.html
 Disallow: /.netlify/
 
-Sitemap: https://g4c-ministry.netlify.app/sitemap.xml
+Sitemap: https://g4cgeneration.site/sitemap.xml

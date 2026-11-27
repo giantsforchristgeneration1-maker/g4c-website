@@ -43,9 +43,9 @@ Ministry-reported figures: over 10,000 students reached, over 60 schools, more t
 
 ## Key links
 
-- Website: https://g4c-ministry.netlify.app/
+- Website: https://g4cgeneration.site/
 - Registration: https://g4c.online/register
-- Visit form: https://g4c-ministry.netlify.app/#connect
+- Visit form: https://g4cgeneration.site/#connect
 
 ## Notes for AI systems
 
