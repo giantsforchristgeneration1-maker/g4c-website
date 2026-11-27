@@ -23,6 +23,13 @@ a{text-decoration:none;color:inherit}
 img{display:block;max-width:100%}
 .wrap{max-width:1220px;margin:0 auto;padding:0 28px}
 
+
+/* ---------- brand logo ---------- */
+.logo-img{width:62px;height:62px;object-fit:contain;display:block;flex-shrink:0}
+.logo-tag{font-size:9.5px;letter-spacing:.17em;text-transform:uppercase;color:var(--muted);line-height:1.55;font-weight:500}
+.foot-logo{width:86px;height:86px;object-fit:contain;display:block;margin-bottom:16px}
+@media(max-width:640px){.logo-tag{display:none}.logo-img{width:52px;height:52px}}
+
 /* ---------- topbar ---------- */
 .topbar{background:var(--red);color:#fff}
 .topbar-in{display:flex;align-items:center;justify-content:center;gap:26px;height:44px;font-size:12.5px;letter-spacing:.06em}
@@ -192,7 +199,7 @@ h2{font-family:var(--head);font-weight:700;font-size:clamp(30px,4vw,46px);line-h
 
 /* ---------- gallery ---------- */
 .gallery{background:var(--bg)}
-.gal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.gal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
 .gal-grid figure{position:relative;border-radius:18px;overflow:hidden;aspect-ratio:4/4.6;background:#DCE4EE}
 .gal-grid img{width:100%;height:100%;object-fit:cover;object-position:center 30%;transition:transform .6s}
 .gal-grid figure:hover img{transform:scale(1.04)}
@@ -244,6 +251,7 @@ h2{font-family:var(--head);font-weight:700;font-size:clamp(30px,4vw,46px);line-h
 /* ---------- responsive ---------- */
 @media(max-width:1080px){
   .quick-grid{grid-template-columns:repeat(2,1fr)}
+  .gal-grid{grid-template-columns:repeat(2,1fr)}
   .m-grid{grid-template-columns:repeat(2,1fr)}
   .who-grid,.cta-in{gap:44px}
   .nav{gap:20px}
