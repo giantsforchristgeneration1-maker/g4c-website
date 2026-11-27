@@ -1,0 +1,13 @@
+[Unit]
+Description=G4C site preview (static)
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/ubuntu/g4c-site
+ExecStart=/usr/bin/python3 -m http.server 8090 --bind 127.0.0.1 --directory /home/ubuntu/g4c-site
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target
