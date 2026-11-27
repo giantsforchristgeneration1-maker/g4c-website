@@ -109,25 +109,32 @@ visitForm?.addEventListener('submit', () => {
   io.observe(document.querySelector('.stats'));
 })();
 
-// ---------- Paystack giving ----------
+// ---------- Paystack giving modal ----------
 (() => {
   const PK = 'pk_live_033a16786afcc415e7bb0bdf3e3cb37171b2921d'; // public key only
-  const amountInput = document.getElementById('pay-amount');
-  const emailInput = document.getElementById('pay-email');
-  const nameInput = document.getElementById('pay-name');
-  const payBtn = document.getElementById('pay-btn');
-  const note = document.getElementById('pay-note');
-  if (!payBtn) return;
+  const modal = document.getElementById('giveModal');
+  if (!modal) return;
 
-  const chips = [...document.querySelectorAll('.amt')];
-  chips.forEach((chip) => {
-    chip.addEventListener('click', () => {
-      chips.forEach((c) => c.classList.remove('active'));
-      chip.classList.add('active');
-      amountInput.value = chip.dataset.amount;
-    });
-  });
-  amountInput?.addEventListener('input', () => chips.forEach((c) => c.classList.remove('active')));
+  const CUR = {
+    NGN: { sym: '₦', min: 100, step: 100, amounts: [5000, 10000, 20000, 50000, 100000],
+           fmt: (v) => '₦' + v.toLocaleString('en-US') },
+    USD: { sym: '$', min: 2, step: 1, amounts: [10, 25, 50, 100, 250],
+           fmt: (v) => '$' + v.toLocaleString('en-US') },
+  };
+
+  let currency = 'NGN';
+
+  const chipsEl = document.getElementById('chips');
+  const amountEl = document.getElementById('pay-amount');
+  const emailEl = document.getElementById('pay-email');
+  const nameEl = document.getElementById('pay-name');
+  const note = document.getElementById('pay-note');
+  const btn = document.getElementById('pay-btn');
+  const formView = document.getElementById('giveForm');
+  const doneView = document.getElementById('giveDone');
+  const curSym = document.getElementById('curSym');
+  const doneName = document.getElementById('doneName');
+  const curBtns = [...document.querySelectorAll('.cur')];
 
   const say = (msg, bad) => {
     if (!note) return;
@@ -135,34 +142,93 @@ visitForm?.addEventListener('submit', () => {
     note.style.color = bad ? '#C8102E' : '';
   };
 
-  payBtn.addEventListener('click', () => {
-    const amount = parseInt((amountInput?.value || '').replace(/[^0-9]/g, ''), 10);
-    const email = (emailInput?.value || '').trim();
-    const name = (nameInput?.value || '').trim();
+  function renderChips() {
+    const c = CUR[currency];
+    chipsEl.innerHTML = c.amounts
+      .map((a) => `<button type="button" class="amt" data-amount="${a}">${c.fmt(a)}</button>`)
+      .join('');
+    chipsEl.querySelectorAll('.amt').forEach((chip) => {
+      chip.addEventListener('click', () => {
+        chipsEl.querySelectorAll('.amt').forEach((x) => x.classList.remove('active'));
+        chip.classList.add('active');
+        amountEl.value = chip.dataset.amount;
+      });
+    });
+    curSym.textContent = c.sym;
+    amountEl.min = c.min;
+    amountEl.step = c.step;
+    amountEl.value = '';
+    amountEl.placeholder = currency === 'NGN' ? 'Enter any amount' : 'Amount in dollars';
+    say('Secured by Paystack · card, transfer, USSD, bank');
+  }
 
-    if (!amount || amount < 100) return say('Enter an amount of at least ₦100.', true);
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return say('Enter a valid email for your receipt.', true);
-    if (typeof PaystackPop === 'undefined') return say('Payment is still loading. Check your connection and try again.', true);
+  function openModal() {
+    formView.hidden = false;
+    doneView.hidden = true;
+    btn.disabled = false;
+    btn.textContent = 'Give now';
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    renderChips();
+    setTimeout(() => amountEl?.focus(), 250);
+  }
 
+  function closeModal() {
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('[data-give]').forEach((el) => {
+    el.addEventListener('click', (e) => { e.preventDefault(); openModal(); });
+  });
+  modal.querySelectorAll('[data-close]').forEach((el) => el.addEventListener('click', closeModal));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal.classList.contains('open')) closeModal(); });
+
+  curBtns.forEach((b) => b.addEventListener('click', () => {
+    curBtns.forEach((x) => x.classList.remove('active'));
+    b.classList.add('active');
+    currency = b.dataset.cur;
+    renderChips();
+  }));
+
+  amountEl?.addEventListener('input', () => chipsEl.querySelectorAll('.amt').forEach((x) => x.classList.remove('active')));
+
+  btn?.addEventListener('click', () => {
+    const c = CUR[currency];
+    const amount = parseInt((amountEl.value || '').replace(/[^0-9]/g, ''), 10);
+    const email = (emailEl.value || '').trim();
+    const name = (nameEl.value || '').trim();
+
+    if (!amount || amount < c.min) return say(`Enter at least ${c.sym}${c.min}.`, true);
+    if (!name) return say('Please tell us your name.', true);
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return say('Enter a valid email so we can send your receipt.', true);
+    if (typeof PaystackPop === 'undefined') return say('Payment is still loading — check your connection and try again.', true);
+
+    say('Opening secure checkout…');
     const handler = PaystackPop.setup({
       key: PK,
       email,
-      amount: amount * 100,           // kobo
-      currency: 'NGN',
+      amount: amount * 100,
+      currency,
       metadata: {
         custom_fields: [
-          { display_name: 'Donor', variable_name: 'donor_name', value: name || 'Anonymous' },
+          { display_name: 'Donor', variable_name: 'donor_name', value: name },
           { display_name: 'Purpose', variable_name: 'purpose', value: 'Giving — G4C' },
         ],
       },
       callback(response) {
-        say('Thank you. Payment received — reference ' + response.reference + '.');
-        payBtn.disabled = true;
-        payBtn.textContent = 'Thank you for giving';
+        formView.hidden = true;
+        doneView.hidden = false;
+        doneName.textContent = name ? ', ' + name.split(' ')[0] : '';
+        fetch('/.netlify/functions/thank-you', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, amount, currency, reference: response.reference }),
+        }).catch(() => {});
       },
-      onClose() {
-        say('Payment window closed. You can try again whenever you are ready.');
-      },
+      onClose() { say('Checkout closed. You can try again whenever you are ready.'); },
     });
     handler.openIframe();
   });

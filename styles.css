@@ -268,6 +268,34 @@ h2{font-family:var(--head);font-weight:700;font-size:clamp(30px,4vw,46px);line-h
 .give-card .fnote{margin-top:12px}
 @media(max-width:900px){.give-grid{grid-template-columns:1fr;gap:36px}}
 
+
+/* ---------- giving modal ---------- */
+.gmodal{position:fixed;inset:0;z-index:200;display:none}
+.gmodal.open{display:block}
+.gmodal-backdrop{position:absolute;inset:0;background:rgba(4,12,22,.72);backdrop-filter:blur(4px)}
+.gmodal-card{position:relative;z-index:1;width:min(480px,calc(100% - 32px));max-height:calc(100vh - 48px);overflow-y:auto;
+  background:#fff;border-radius:20px;padding:34px 30px 30px;margin:24px auto;
+  box-shadow:0 40px 80px rgba(0,0,0,.45);animation:gpop .22s ease}
+@keyframes gpop{from{transform:translateY(14px);opacity:0}to{transform:none;opacity:1}}
+.gmodal-x{position:absolute;right:14px;top:12px;width:34px;height:34px;border:0;background:#F2F5F9;border-radius:50%;
+  font-size:20px;line-height:1;color:#5A6B7E;cursor:pointer}
+.gmodal-x:hover{background:#E6ECF3}
+.gmodal-card .label{margin-bottom:12px}
+.gmodal-card h3{font-family:var(--head);font-size:26px;font-weight:700;color:var(--navy);letter-spacing:-.02em;margin-bottom:8px}
+.gmodal-sub{font-size:13.5px;color:var(--muted);margin-bottom:20px;line-height:1.6}
+.cur-toggle{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:#F2F5F9;border-radius:12px;padding:5px;margin-bottom:18px}
+.cur{height:40px;border:0;border-radius:9px;background:transparent;font-family:var(--head);font-size:14px;font-weight:600;
+  color:#5A6B7E;cursor:pointer;transition:.18s}
+.cur.active{background:#fff;color:var(--navy);box-shadow:0 2px 8px rgba(10,42,74,.12)}
+.gmodal-card .amt-grid{grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}
+.gmodal-card .amt{height:46px;font-size:15px}
+.give-done{text-align:center;padding:14px 4px 4px}
+.give-done .tick{width:64px;height:64px;border-radius:50%;background:#E7F6EE;color:var(--green);
+  display:grid;place-items:center;font-size:30px;margin:0 auto 18px}
+.give-done h3{margin-bottom:10px}
+.give-done p{font-size:14.5px;color:var(--muted);line-height:1.7;margin-bottom:22px}
+@media(max-width:520px){.gmodal-card{padding:28px 20px 22px}.gmodal-card .amt-grid{grid-template-columns:1fr 1fr}}
+
 /* ---------- visit form ---------- */
 .formsec{background:var(--cream)}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}

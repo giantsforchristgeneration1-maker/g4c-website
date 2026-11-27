@@ -104,11 +104,11 @@
       <a href="#pillars">What We Do</a>
       <a href="#ministries">Ministries</a>
       <a href="#outreach">Outreaches</a>
-      <a href="#giving">Giving</a>
+      <a href="#giving" data-give>Giving</a>
     </nav>
 
     <div class="header-actions">
-      <a class="btn btn-outline" href="#giving">Give</a>
+      <a class="btn btn-outline" href="#giving" data-give>Give</a>
       <a class="btn btn-red" href="https://g4c.online/register"><span class="dot"></span>Join Us</a>
       <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
     </div>
@@ -167,7 +167,7 @@
         </span>
         <h3>Online giving</h3>
         <p>Support the work of the Gospel, our students and our outreach programmes.</p>
-        <a href="#giving">Give now &rarr;</a>
+        <a href="#giving" data-give>Give now &rarr;</a>
       </article>
 
       <article class="qcard">
@@ -445,7 +445,7 @@
           <input id="pay-name" type="text" autocomplete="name" placeholder="Your name">
         </label>
 
-        <button id="pay-btn" class="btn btn-red btn-lg pay-btn" type="button">Donate with Paystack</button>
+        <button class="btn btn-red btn-lg pay-btn" type="button" data-give>Give now</button>
         <p class="fnote" id="pay-note">Secured by Paystack. You will receive a receipt by email.</p>
       </div>
     </div>
@@ -526,12 +526,12 @@
       <a href="#programme">Thursday programme</a>
       <a href="https://g4c.online/register">Register to join us</a>
       <a href="https://g4c.online/register">Join Us</a>
-      <a href="#giving">Giving</a>
+      <a href="#giving" data-give>Giving</a>
     </div>
     <div>
       <h4>Get in touch</h4>
       <a href="#connect">Send a message</a>
-      <a href="#giving">Partner with us</a>
+      <a href="#giving" data-give>Partner with us</a>
       <a href="#ministries">Church media support</a>
     </div>
   </div>
@@ -545,5 +545,46 @@
 
 <script src="https://js.paystack.co/v1/inline.js"></script>
 <script src="script.js"></script>
+
+<!-- GIVING MODAL -->
+<div class="gmodal" id="giveModal" role="dialog" aria-modal="true" aria-labelledby="giveTitle" aria-hidden="true">
+  <div class="gmodal-backdrop" data-close></div>
+  <div class="gmodal-card">
+    <button class="gmodal-x" type="button" data-close aria-label="Close">&times;</button>
+
+    <div id="giveForm">
+      <p class="label">Giving</p>
+      <h3 id="giveTitle">Give to the work</h3>
+      <p class="gmodal-sub">Soul winning, student sponsorship and training — every gift goes into the work.</p>
+
+      <div class="cur-toggle" role="group" aria-label="Currency">
+        <button type="button" class="cur active" data-cur="NGN">₦ Naira</button>
+        <button type="button" class="cur" data-cur="USD">$ Dollar</button>
+      </div>
+
+      <div class="amt-grid" id="chips" role="group" aria-label="Amount"></div>
+
+      <label class="gfield">Amount (<span id="curSym">₦</span>)
+        <input id="pay-amount" type="number" inputmode="numeric" min="100" step="100" placeholder="Enter any amount">
+      </label>
+      <label class="gfield">Full name
+        <input id="pay-name" type="text" autocomplete="name" placeholder="Your name">
+      </label>
+      <label class="gfield">Email — for your receipt and thank-you
+        <input id="pay-email" type="email" autocomplete="email" placeholder="you@email.com">
+      </label>
+
+      <button class="btn btn-red btn-lg pay-btn" id="pay-btn" type="button">Give now</button>
+      <p class="fnote" id="pay-note">Secured by Paystack · card, transfer, USSD, bank</p>
+    </div>
+
+    <div id="giveDone" class="give-done" hidden>
+      <div class="tick">✓</div>
+      <h3>Thank you<span id="doneName"></span>.</h3>
+      <p id="doneMsg">Your gift has been received. A receipt and a thank-you note are on their way to your email.</p>
+      <button class="btn btn-navy" type="button" data-close>Close</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
