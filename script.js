@@ -73,6 +73,38 @@ document.querySelectorAll('.seemore').forEach(btn => {
   const digits = (s) => String(s || '').replace(/[^0-9]/g, '');
   const fmt = (v) => (v ? Number(v).toLocaleString('en-US') : '');
 
+
+  // load Paystack on demand — the <script> tag can be blocked or fail on mobile networks
+  const loadPaystack = () => new Promise((resolve, reject) => {
+    if (window.PaystackPop) return resolve();
+    const existing = document.querySelector('script[data-paystack]');
+    if (existing) {
+      existing.addEventListener('load', () => resolve());
+      existing.addEventListener('error', () => reject(new Error('blocked')));
+      return;
+    }
+    const s = document.createElement('script');
+    s.src = 'https://js.paystack.co/v1/inline.js';
+    s.async = true;
+    s.dataset.paystack = '1';
+    const timer = setTimeout(() => reject(new Error('timeout')), 12000);
+    s.onload = () => { clearTimeout(timer); resolve(); };
+    s.onerror = () => { clearTimeout(timer); reject(new Error('blocked')); };
+    document.head.appendChild(s);
+  });
+
+  const startCheckout = (opts) => {
+    loadPaystack().then(() => {
+      try {
+        PaystackPop.setup(opts).openIframe();
+      } catch (e) {
+        say('Could not open checkout. Please try again.', true);
+      }
+    }).catch(() => {
+      say('Payment could not load. Check your connection or turn off any ad-blocker, then try again.', true);
+    });
+  };
+
   const say = (msg, bad) => {
     if (!note) return;
     note.textContent = msg || '';
@@ -144,10 +176,8 @@ document.querySelectorAll('.seemore').forEach(btn => {
 
     if (!amount || amount < c.min) return say(`Enter at least ${c.sym}${c.min}.`, true);
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return say('Enter a valid email so we can send your receipt.', true);
-    if (typeof PaystackPop === 'undefined') return say('Payment is still loading — check your connection and try again.', true);
-
     say('Opening secure checkout…');
-    const handler = PaystackPop.setup({
+    const options = {
       key: PK,
       email,
       amount: amount * 100,
@@ -164,8 +194,8 @@ document.querySelectorAll('.seemore').forEach(btn => {
         doneName.textContent = name ? ', ' + name.split(' ')[0] : '';
       },
       onClose() { say('Checkout closed. You can try again whenever you are ready.'); },
-    });
-    handler.openIframe();
+    };
+    startCheckout(options);
   });
 })();
 
@@ -211,3 +241,17 @@ document.querySelectorAll('.seemore').forEach(btn => {
     })
   );
 })();
+
+
+// warm the Paystack script after load so the first tap is instant
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    if (!window.PaystackPop) {
+      const s = document.createElement('script');
+      s.src = 'https://js.paystack.co/v1/inline.js';
+      s.async = true;
+      s.dataset.paystack = '1';
+      document.head.appendChild(s);
+    }
+  }, 2500);
+});
