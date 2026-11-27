@@ -219,6 +219,25 @@ h2{font-family:var(--head);font-weight:700;font-size:clamp(30px,4vw,46px);line-h
 .site-footer a:hover{color:var(--mint)}
 .foot-bottom{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-top:54px;padding-top:22px;border-top:1px solid rgba(255,255,255,.12);font-size:12.5px;color:rgba(255,255,255,.45)}
 
+
+/* ---------- visit form ---------- */
+.formsec{background:var(--cream)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+.flist{list-style:none;margin-top:26px}
+.flist li{position:relative;padding-left:26px;margin-bottom:12px;font-size:15px;color:#4A5B6E}
+.flist li::before{content:'';position:absolute;left:0;top:9px;width:8px;height:8px;border-radius:50%;background:var(--green)}
+.visit-form{background:#fff;border:1px solid #EFE3CB;border-radius:20px;padding:32px 30px;box-shadow:0 16px 40px rgba(120,90,30,.08)}
+.hp{position:absolute;left:-9999px}
+.frow{margin-bottom:16px}
+.frow.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.visit-form label{display:block;font-size:12.5px;font-weight:600;color:var(--navy);letter-spacing:.02em}
+.visit-form input,.visit-form textarea{width:100%;margin-top:7px;padding:13px 15px;border:1px solid #E3E9F0;border-radius:11px;font-family:var(--sans);font-size:14.5px;color:var(--ink);background:#FBFCFE;transition:border-color .2s,box-shadow .2s}
+.visit-form input:focus,.visit-form textarea:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(46,158,98,.13);background:#fff}
+.visit-form textarea{resize:vertical}
+.visit-form .btn{width:100%;margin-top:8px}
+.fnote{margin-top:12px;font-size:12px;color:var(--muted);text-align:center}
+@media(max-width:900px){.form-grid{grid-template-columns:1fr;gap:36px}.frow.two{grid-template-columns:1fr}}
+
 /* ---------- to top ---------- */
 .to-top{position:fixed;right:22px;bottom:22px;width:44px;height:44px;border-radius:50%;background:#fff;color:var(--navy);display:grid;place-items:center;font-size:17px;box-shadow:0 8px 24px rgba(10,42,74,.25);z-index:50}
 
