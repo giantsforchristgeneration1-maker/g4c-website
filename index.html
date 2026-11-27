@@ -445,7 +445,7 @@
           <input id="pay-name" type="text" autocomplete="name" placeholder="Your name">
         </label>
 
-        <button class="btn btn-red btn-lg pay-btn" type="button" data-give>Give now</button>
+        <button class="btn btn-red btn-lg pay-btn" type="button" data-give>Donate and support God's work</button>
         <p class="fnote" id="pay-note">Secured by Paystack. You will receive a receipt by email.</p>
       </div>
     </div>
@@ -574,7 +574,7 @@
         <input id="pay-email" type="email" autocomplete="email" placeholder="you@email.com">
       </label>
 
-      <button class="btn btn-red btn-lg pay-btn" id="pay-btn" type="button">Give now</button>
+      <button class="btn btn-red btn-lg pay-btn" id="pay-btn" type="button">Donate and support God's work</button>
       <p class="fnote" id="pay-note">Secured by Paystack · card, transfer, USSD, bank</p>
     </div>
 
@@ -586,5 +586,16 @@
     </div>
   </div>
 </div>
+
+<!-- SUPPORT PROMPT -->
+<aside class="support-pop" id="supportPop" role="dialog" aria-live="polite" aria-label="Support the ministry">
+  <button class="support-x" type="button" data-support-close aria-label="Dismiss">&times;</button>
+  <p class="support-kicker">Keep the work going</p>
+  <p class="support-msg" id="supportMsg"></p>
+  <div class="support-actions">
+    <button class="btn btn-red" type="button" data-give>Support the work</button>
+    <button class="support-later" type="button" data-support-close>Not now</button>
+  </div>
+</aside>
 </body>
 </html>

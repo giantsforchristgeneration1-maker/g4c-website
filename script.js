@@ -233,3 +233,46 @@ visitForm?.addEventListener('submit', () => {
     handler.openIframe();
   });
 })();
+
+// ---------- support prompts: three rotating appeals ----------
+(() => {
+  const pop = document.getElementById('supportPop');
+  const msg = document.getElementById('supportMsg');
+  if (!pop) return;
+
+  const MESSAGES = [
+    "We spend a lot of money reaching secondary schools — transport, Bibles, materials. Your gift keeps us going back.",
+    "Every outreach costs fuel, transport and provisions. Help us keep taking the Gospel to villages, markets and streets.",
+    "Young people need more than preaching — mentorship, skills and training cost money. Will you help us raise them?",
+  ];
+
+  const KEY = 'g4c-support-dismissed';
+  const dismissedAt = Number(localStorage.getItem(KEY) || 0);
+  const week = 7 * 24 * 60 * 60 * 1000;
+  if (dismissedAt && Date.now() - dismissedAt < week) return;
+
+  let shown = false;
+  const show = () => {
+    if (shown) return;
+    if (pop.classList.contains('show')) return;
+    if (document.getElementById('giveModal')?.classList.contains('open')) return;
+    shown = true;
+    const idx = Math.floor(Math.random() * MESSAGES.length);
+    msg.textContent = MESSAGES[idx];
+    pop.classList.add('show');
+  };
+
+  const onScroll = () => {
+    const pct = (window.scrollY + window.innerHeight) / document.body.scrollHeight;
+    if (pct > 0.35) show();
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  setTimeout(show, 30000);
+
+  pop.querySelectorAll('[data-support-close]').forEach((b) =>
+    b.addEventListener('click', () => {
+      pop.classList.remove('show');
+      localStorage.setItem(KEY, String(Date.now()));
+    })
+  );
+})();
