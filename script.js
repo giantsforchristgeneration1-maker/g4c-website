@@ -64,3 +64,47 @@ visitForm?.addEventListener('submit', () => {
     /* never block the native submit */
   }
 });
+
+// hero stats: count up when they come into view
+(() => {
+  const nodes = [...document.querySelectorAll('.stats .stat strong')];
+  if (!nodes.length) return;
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const parsed = nodes.map((el) => {
+    const raw = (el.textContent || '').trim();
+    const m = raw.match(/^([\d,]+)(.*)$/);
+    if (!m) return null;
+    return { el, target: parseInt(m[1].replace(/,/g, ''), 10), suffix: m[2] || '', raw };
+  });
+  if (parsed.some((p) => !p) || reduce) return;
+
+  const fmt = (n) => n.toLocaleString('en-US');
+  const ease = (t) => 1 - Math.pow(1 - t, 3);
+  const DURATION = 1600;
+  let started = false;
+
+  const run = () => {
+    if (started) return;
+    started = true;
+    const t0 = performance.now();
+    parsed.forEach((p) => { p.el.textContent = '0' + p.suffix; });
+
+    const frame = (now) => {
+      const t = Math.min((now - t0) / DURATION, 1);
+      const eased = ease(t);
+      parsed.forEach((p) => {
+        p.el.textContent = fmt(Math.round(p.target * eased)) + p.suffix;
+      });
+      if (t < 1) requestAnimationFrame(frame);
+      else parsed.forEach((p) => { p.el.textContent = p.raw; });
+    };
+    requestAnimationFrame(frame);
+  };
+
+  if (!('IntersectionObserver' in window)) { run(); return; }
+  const io = new IntersectionObserver((entries) => {
+    if (entries.some((e) => e.isIntersecting)) { run(); io.disconnect(); }
+  }, { threshold: 0.35 });
+  io.observe(document.querySelector('.stats'));
+})();
