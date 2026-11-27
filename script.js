@@ -42,3 +42,25 @@ document.querySelectorAll('.seemore').forEach(btn => {
     if (!open) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 });
+
+// visit form: send via the Resend function, fall back to Netlify Forms
+const visitForm = document.querySelector('form[name="visit"]');
+visitForm?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = visitForm.querySelector('button[type=submit]');
+  const label = btn ? btn.innerHTML : '';
+  if (btn) { btn.disabled = true; btn.innerHTML = 'Sending…'; }
+  try {
+    const payload = Object.fromEntries(new FormData(visitForm).entries());
+    const res = await fetch('/.netlify/functions/notify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) throw new Error('send_failed');
+    window.location.href = '/thanks.html';
+  } catch (err) {
+    if (btn) { btn.disabled = false; btn.innerHTML = label; }
+    visitForm.submit();
+  }
+});
