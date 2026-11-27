@@ -331,6 +331,24 @@ h2{font-family:var(--head);font-weight:700;font-size:clamp(30px,4vw,46px);line-h
 .support-later{background:none;border:0;color:#8494A6;font-size:13px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 @media(max-width:560px){.support-pop{right:12px;left:12px;bottom:12px;width:auto}}
 
+
+/* ---------- mobile donate bar ---------- */
+.mbar{display:none}
+@media(max-width:900px){
+  body{padding-bottom:74px}
+  .mbar{display:flex;align-items:center;justify-content:space-between;gap:12px;
+    position:fixed;left:0;right:0;bottom:0;z-index:130;
+    padding:10px 16px calc(10px + env(safe-area-inset-bottom));
+    background:rgba(8,32,56,.97);backdrop-filter:blur(10px);
+    border-top:1px solid rgba(255,255,255,.14)}
+  .mbar-txt{display:flex;flex-direction:column;line-height:1.25;color:#fff;min-width:0}
+  .mbar-txt strong{font-family:var(--head);font-size:13.5px;font-weight:600}
+  .mbar-txt span{font-size:10.5px;color:rgba(255,255,255,.62);letter-spacing:.04em}
+  .mbar .btn{height:42px;padding:0 20px;font-size:12.5px;flex-shrink:0}
+  .support-pop{bottom:86px}
+  .to-top{bottom:86px}
+}
+
 /* ---------- to top ---------- */
 .to-top{position:fixed;right:22px;bottom:22px;width:44px;height:44px;border-radius:50%;background:#fff;color:var(--navy);display:grid;place-items:center;font-size:17px;box-shadow:0 8px 24px rgba(10,42,74,.25);z-index:50}
 
