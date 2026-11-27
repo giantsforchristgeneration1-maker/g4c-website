@@ -2,8 +2,8 @@
 // and send the visitor a confirmation. Uses the Resend REST API directly.
 // Dormant until RESEND_API_KEY is set in the Netlify environment.
 
-const TO = process.env.NOTIFY_TO || 'info@mail.g4c.online';
-const FROM = process.env.MAIL_FROM || 'G4C <hello@mail.g4c.online>';
+const TO = process.env.NOTIFY_TO || 'info@mail.g4cgeneration.site';
+const FROM = process.env.MAIL_FROM || 'G4C <hello@mail.g4cgeneration.site>';
 
 const esc = (s = '') =>
   String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));

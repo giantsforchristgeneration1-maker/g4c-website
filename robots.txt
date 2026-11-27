@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /thanks.html
+Disallow: /.netlify/
+
+Sitemap: https://g4c-ministry.netlify.app/sitemap.xml
