@@ -138,7 +138,8 @@ visitForm?.addEventListener('submit', () => {
 
   const say = (msg, bad) => {
     if (!note) return;
-    note.textContent = msg;
+    note.textContent = msg || '';
+    note.hidden = !msg;
     note.style.color = bad ? '#C8102E' : '';
   };
 
@@ -159,7 +160,6 @@ visitForm?.addEventListener('submit', () => {
     amountEl.step = c.step;
     amountEl.value = '';
     amountEl.placeholder = currency === 'NGN' ? 'Enter any amount' : 'Amount in dollars';
-    say('Secured by Paystack · card, transfer, USSD, bank');
   }
 
   function openModal() {
