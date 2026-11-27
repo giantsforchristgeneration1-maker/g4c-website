@@ -108,3 +108,62 @@ visitForm?.addEventListener('submit', () => {
   }, { threshold: 0.35 });
   io.observe(document.querySelector('.stats'));
 })();
+
+// ---------- Paystack giving ----------
+(() => {
+  const PK = 'pk_live_033a16786afcc415e7bb0bdf3e3cb37171b2921d'; // public key only
+  const amountInput = document.getElementById('pay-amount');
+  const emailInput = document.getElementById('pay-email');
+  const nameInput = document.getElementById('pay-name');
+  const payBtn = document.getElementById('pay-btn');
+  const note = document.getElementById('pay-note');
+  if (!payBtn) return;
+
+  const chips = [...document.querySelectorAll('.amt')];
+  chips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      chips.forEach((c) => c.classList.remove('active'));
+      chip.classList.add('active');
+      amountInput.value = chip.dataset.amount;
+    });
+  });
+  amountInput?.addEventListener('input', () => chips.forEach((c) => c.classList.remove('active')));
+
+  const say = (msg, bad) => {
+    if (!note) return;
+    note.textContent = msg;
+    note.style.color = bad ? '#C8102E' : '';
+  };
+
+  payBtn.addEventListener('click', () => {
+    const amount = parseInt((amountInput?.value || '').replace(/[^0-9]/g, ''), 10);
+    const email = (emailInput?.value || '').trim();
+    const name = (nameInput?.value || '').trim();
+
+    if (!amount || amount < 100) return say('Enter an amount of at least ₦100.', true);
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return say('Enter a valid email for your receipt.', true);
+    if (typeof PaystackPop === 'undefined') return say('Payment is still loading. Check your connection and try again.', true);
+
+    const handler = PaystackPop.setup({
+      key: PK,
+      email,
+      amount: amount * 100,           // kobo
+      currency: 'NGN',
+      metadata: {
+        custom_fields: [
+          { display_name: 'Donor', variable_name: 'donor_name', value: name || 'Anonymous' },
+          { display_name: 'Purpose', variable_name: 'purpose', value: 'Giving — G4C' },
+        ],
+      },
+      callback(response) {
+        say('Thank you. Payment received — reference ' + response.reference + '.');
+        payBtn.disabled = true;
+        payBtn.textContent = 'Thank you for giving';
+      },
+      onClose() {
+        say('Payment window closed. You can try again whenever you are ready.');
+      },
+    });
+    handler.openIframe();
+  });
+})();

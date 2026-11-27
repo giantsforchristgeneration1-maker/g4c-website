@@ -161,7 +161,7 @@
         <a href="https://g4c.online/register">Register now &rarr;</a>
       </article>
 
-      <article class="qcard" id="giving">
+      <article class="qcard">
         <span class="qicon qicon-green">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20s-7-4.3-7-9a4 4 0 017-2.6A4 4 0 0119 11c0 4.7-7 9-7 9z"/></svg>
         </span>
@@ -411,6 +411,46 @@
     </div>
   </section>
 
+
+  <!-- GIVING -->
+  <section class="giving" id="giving">
+    <div class="wrap give-grid">
+      <div class="give-copy">
+        <p class="label">Giving</p>
+        <h2>Give, and keep the work moving.</h2>
+        <p class="sec-sub">Your giving carries soul winning in schools and villages, keeps students in class, and puts business training in the hands of people who need it. Every naira is accounted for by the ministry.</p>
+        <ul class="flist">
+          <li>Supports outreach to schools, markets and villages</li>
+          <li>Helps sponsor students' education and exam fees</li>
+          <li>Funds training, mentorship and member care</li>
+        </ul>
+      </div>
+
+      <div class="give-card">
+        <p class="give-title">Choose an amount</p>
+        <div class="amt-grid" role="group" aria-label="Donation amount">
+          <button type="button" class="amt" data-amount="2000">₦2,000</button>
+          <button type="button" class="amt" data-amount="5000">₦5,000</button>
+          <button type="button" class="amt" data-amount="10000">₦10,000</button>
+          <button type="button" class="amt" data-amount="25000">₦25,000</button>
+        </div>
+
+        <label class="gfield">Amount (₦)
+          <input id="pay-amount" type="number" min="100" step="100" inputmode="numeric" placeholder="Enter any amount">
+        </label>
+        <label class="gfield">Email for your receipt
+          <input id="pay-email" type="email" autocomplete="email" placeholder="you@email.com">
+        </label>
+        <label class="gfield">Name <span class="opt">(optional)</span>
+          <input id="pay-name" type="text" autocomplete="name" placeholder="Your name">
+        </label>
+
+        <button id="pay-btn" class="btn btn-red btn-lg pay-btn" type="button">Donate with Paystack</button>
+        <p class="fnote" id="pay-note">Secured by Paystack. You will receive a receipt by email.</p>
+      </div>
+    </div>
+  </section>
+
   <!-- VISIT FORM -->
   <section class="formsec" id="connect">
     <div class="wrap form-grid">
@@ -503,6 +543,7 @@
 
 <a class="to-top" href="#top" aria-label="Back to top">↑</a>
 
+<script src="https://js.paystack.co/v1/inline.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
