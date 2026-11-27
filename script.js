@@ -43,24 +43,24 @@ document.querySelectorAll('.seemore').forEach(btn => {
   });
 });
 
-// visit form: send via the Resend function, fall back to Netlify Forms
+// visit form: record in Netlify Forms AND notify by email via the Resend function.
+// Native submit is never blocked, so a submission is always stored even if email fails.
 const visitForm = document.querySelector('form[name="visit"]');
-visitForm?.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const btn = visitForm.querySelector('button[type=submit]');
-  const label = btn ? btn.innerHTML : '';
-  if (btn) { btn.disabled = true; btn.innerHTML = 'Sending…'; }
+visitForm?.addEventListener('submit', () => {
   try {
     const payload = Object.fromEntries(new FormData(visitForm).entries());
-    const res = await fetch('/.netlify/functions/notify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-    if (!res.ok) throw new Error('send_failed');
-    window.location.href = '/thanks.html';
-  } catch (err) {
-    if (btn) { btn.disabled = false; btn.innerHTML = label; }
-    visitForm.submit();
+    const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
+    if (navigator.sendBeacon) {
+      navigator.sendBeacon('/.netlify/functions/notify', blob);
+    } else {
+      fetch('/.netlify/functions/notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+        keepalive: true,
+      });
+    }
+  } catch (_) {
+    /* never block the native submit */
   }
 });
