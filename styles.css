@@ -266,6 +266,13 @@ h2{font-family:var(--head);font-weight:700;font-size:clamp(30px,4vw,46px);line-h
 .gfield input:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(46,158,98,.13);background:#fff}
 .pay-btn{width:100%;margin-top:6px}
 .give-card .fnote{margin-top:12px}
+/* inline giving card */
+.give-card .amt-grid{grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}
+.give-card .gfield{margin-bottom:13px}
+.pay-note{margin-top:12px;font-size:12.5px;line-height:1.5;text-align:center;color:var(--muted)}
+.pay-note[hidden]{display:none}
+.give-card .pay-btn{margin-top:4px}
+
 @media(max-width:900px){.give-grid{grid-template-columns:1fr;gap:36px}}
 
 

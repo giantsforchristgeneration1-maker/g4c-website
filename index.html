@@ -426,10 +426,20 @@
         </ul>
       </div>
 
-      <div class="give-card">
-        <p class="give-title">Stand with the work</p>
-        <p class="give-lead">Choose any amount — Naira or Dollars — and give in under a minute.</p>
-        <a class="btn btn-red btn-lg pay-btn" href="#giving" data-give>Donate and support God's work</a>
+      <div class="give-card" id="giveCard">
+        <p class="give-title">Choose an amount</p>
+        <div class="amt-grid" data-chips role="group" aria-label="Donation amount"></div>
+        <label class="gfield">Amount (<span data-sym>&#8358;</span>)
+          <input type="text" data-amount inputmode="numeric" autocomplete="off" placeholder="Enter any amount">
+        </label>
+        <label class="gfield">Email &mdash; for your receipt and thank-you
+          <input type="email" data-email autocomplete="email" placeholder="you@email.com">
+        </label>
+        <label class="gfield">Full name <span class="opt">(optional)</span>
+          <input type="text" data-name autocomplete="name" placeholder="Your name">
+        </label>
+        <button class="btn btn-red btn-lg pay-btn" type="button" data-pay>Donate and support God's work</button>
+        <p class="pay-note" data-note hidden></p>
       </div>
     </div>
   </section>
@@ -536,35 +546,30 @@
   <div class="gmodal-card">
     <button class="gmodal-x" type="button" data-close aria-label="Close">&times;</button>
 
-    <div id="giveForm">
+    <div id="giveForm" data-form>
       <p class="label">Giving</p>
       <h3 id="giveTitle">Give to the work</h3>
       <p class="gmodal-sub">Soul winning, student sponsorship and training — every gift goes into the work.</p>
 
-      <div class="cur-toggle" role="group" aria-label="Currency">
-        <button type="button" class="cur active" data-cur="NGN">₦ Naira</button>
-        <button type="button" class="cur" data-cur="USD">$ Dollar</button>
-      </div>
+      <div class="amt-grid" id="chips" data-chips role="group" aria-label="Amount"></div>
 
-      <div class="amt-grid" id="chips" role="group" aria-label="Amount"></div>
-
-      <label class="gfield">Amount (<span id="curSym">₦</span>)
-        <input id="pay-amount" type="text" inputmode="numeric" autocomplete="off" placeholder="Enter any amount">
+      <label class="gfield">Amount (<span id="curSym" data-sym>₦</span>)
+        <input id="pay-amount" data-amount type="text" inputmode="numeric" autocomplete="off" placeholder="Enter any amount">
       </label>
       <label class="gfield">Full name <span class="opt">(optional)</span>
-        <input id="pay-name" type="text" autocomplete="name" placeholder="Your name">
+        <input id="pay-name" data-name type="text" autocomplete="name" placeholder="Your name">
       </label>
       <label class="gfield">Email — for your receipt and thank-you
-        <input id="pay-email" type="email" autocomplete="email" placeholder="you@email.com">
+        <input id="pay-email" data-email type="email" autocomplete="email" placeholder="you@email.com">
       </label>
 
-      <button class="btn btn-red btn-lg pay-btn" id="pay-btn" type="button">Donate and support God's work</button>
-      <p class="fnote" id="pay-note" hidden></p>
+      <button class="btn btn-red btn-lg pay-btn" id="pay-btn" data-pay type="button">Donate and support God's work</button>
+      <p class="fnote" id="pay-note" data-note hidden></p>
     </div>
 
-    <div id="giveDone" class="give-done" hidden>
+    <div id="giveDone" data-done class="give-done" hidden>
       <div class="tick">✓</div>
-      <h3>Thank you<span id="doneName"></span>.</h3>
+      <h3>Thank you<span id="doneName" data-done-name></span>.</h3>
       <p id="doneMsg">Your gift has been received. A receipt and a thank-you note are on their way to your email.</p>
       <button class="btn btn-navy" type="button" data-close>Close</button>
     </div>
