@@ -223,6 +223,13 @@ document.querySelectorAll('.seemore').forEach(btn => {
     if (shown) return;
     if (pop.classList.contains('show')) return;
     if (document.getElementById('giveModal')?.classList.contains('open')) return;
+    // never float over the giving form itself
+    const card = document.getElementById('giveCard');
+    if (card) {
+      const r = card.getBoundingClientRect();
+      const visible = r.top < window.innerHeight && r.bottom > 0;
+      if (visible) { setTimeout(show, 12000); return; }
+    }
     shown = true;
     const idx = Math.floor(Math.random() * MESSAGES.length);
     msg.textContent = MESSAGES[idx];
